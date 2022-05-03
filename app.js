@@ -1,63 +1,50 @@
-let level = 0;
-let maxHittableTime = 7;
-let minHittableTime = 4;
+const squares = document.querySelectorAll('.square')
+const mole = document.querySelector('.mole')
+const timeLeft = document.querySelector('#time-left')
+const score = document.querySelector('#score')
 
-function randMinMax(max, min)
-{
-    let rand = Math.floor(Math.random() * (max - min)) + min;
-    return rand * 1000;
+let result = 0
+let hitPosition;
+let currentTime = 60;
+let timerId = null
+
+function randomSquare() {
+    squares.forEach(square => {
+        square.classList.remove('mole')
+    })
+
+    let randomSquare = squares[Math.floor(Math.random() * 9)]
+    randomSquare.classList.add('mole');
+
+    hitPosition = randomSquare.id
+
 }
 
-function wrongAnswer()
-{
-    while (1)
-        alert("you lost, refresh page and try again");
+squares.forEach(square => {
+    square.addEventListener('mousedown', () => {
+        if (square.id == hitPosition) {
+            result++;
+            score.textContent = result;
+            hitPosition = null;
+        }
+    })
+})
+
+function moveMole() {
+    timerId = setInterval(randomSquare, 500)
 }
 
-function rigthAnswer()
-{
-    alert("right answer my dude");
-}
+moveMole()
 
-function selectRandDiv()
-{
-    let allDivs = document.body.querySelectorAll(".hole");
-    let randDiv = allDivs[randMinMax(0, 12)/1000];
-    randDiv.style.background = "white";
+function countDown() {
+    currentTime--
+    timeLeft.textContent = currentTime
 
-    for(let i = 0; i < allDivs.length; i++){
-        if(allDivs[i] !== randDiv)
-            allDivs[i].addEventListener("click", wrongAnswer);
+    if (currentTime == 0) {
+        clearInterval(countDownTimerId)
+        clearInterval(timerId)
+        alert('GAME OVER! Your final score is ' + result)
     }
-    randDiv.addEventListener("click", rigthAnswer);
 }
 
-//display the game grid when clicking on the start button
-function displayGame()
-{
-    document.body.querySelector(".start").style.display = "none";
-    let p = document.createElement("p");
-    let container = document.createElement("div");
-    document.body.appendChild(container);
-    document.body.appendChild(p);
-    container.setAttribute("class", "container");
-    p.setAttribute("class", "score");
-    let newDiv;
-    for (let i = 0; i < 12; i++)
-    {
-        newDiv = document.createElement("div");
-        container.appendChild(newDiv);
-        newDiv.setAttribute("class", "hole");
-    }
-    p.innerHTML = "Score : 0";
-}
-document.querySelector(".start").addEventListener("click", () => {
-    displayGame()
-    selectRandDiv()
-});
-
-
-
-
-
-// setInterval(selectRandDiv, randMinMax(maxHittableTime, minHittableTime))
+let countDownTimerId = setInterval(countDown, 1000)

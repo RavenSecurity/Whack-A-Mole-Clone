@@ -1,20 +1,16 @@
-body {
-    height: 100vh;
-    width: 100vh;
-    margin-top: 5%;
-    margin-left: 30%;
+.grid {
+    display: flex;
+    width: 606px;
+    height: 606px;
+    flex-wrap: wrap;
 }
 
-.container {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-}
-
-.hole {
+.square {
     height: 200px;
     width: 200px;
-    border: 10px rgb(224, 0, 0) solid;
-    border-radius: 500px;
-    background: rgb(0,0,0);
-    background: radial-gradient(circle, rgba(0,0,0,1) 0%, rgba(255,0,0,1) 79%);
+    border: solid black 1px;
+}
+
+.mole {
+    background-color: blue;
 }
